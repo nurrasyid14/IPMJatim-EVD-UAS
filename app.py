@@ -1,7 +1,14 @@
 import streamlit as st
-from data_handler import load_and_preprocess
-from insights import bottom_n_concern, cluster_distribution
-from insights import horizontal_bar, pie_chart, pca_3d
+from dataset_handler import load_and_preprocess
+from insights import (
+    top_n_accumulative,
+    top_n_by_index,
+    bottom_n_concern,
+    cluster_distribution,
+    horizontal_bar,
+    pie_chart,
+    pca_3d
+)
 
 # -----------------------
 # Streamlit Settings
@@ -12,7 +19,7 @@ st.title("City Index Dashboard")
 # -----------------------
 # Load Data
 # -----------------------
-df = load_and_preprocess("data_handler/IPM Jatim 2024.xlsx")
+df = load_and_preprocess("data/dataset.csv")
 
 # -----------------------
 # Sidebar Filters
@@ -27,10 +34,10 @@ cluster_filter = st.sidebar.multiselect(
 filtered_df = df[df['Cluster'].isin(cluster_filter)]
 
 # -----------------------
-# Top 3 by Cluster (Blue Gradient)
+# Top 10 by Accumulative Index (Blue Gradient)
 # -----------------------
 st.header("Top 10 Cities by Accumulative Index")
-top_acc_df = top_n_accumulative(filtered_df)
+top_acc_df = top_n_accumulative(filtered_df, n=10)
 st.plotly_chart(
     horizontal_bar(
         top_acc_df,
@@ -42,7 +49,9 @@ st.plotly_chart(
     use_container_width=True
 )
 
-# Top 5 by individual indexes
+# -----------------------
+# Top 5 by Individual Indexes (Blue Gradient)
+# -----------------------
 for col in ['Indeks Ekonomi', 'Indeks Pendidikan', 'Indeks Kesehatan']:
     st.header(f"Top 5 Cities by {col}")
     top_index_df = top_n_by_index(filtered_df, col, n=5)
@@ -61,7 +70,7 @@ for col in ['Indeks Ekonomi', 'Indeks Pendidikan', 'Indeks Kesehatan']:
 # Bottom 5 Concern (Red Gradient)
 # -----------------------
 st.header("Bottom 5 Concern (Lowest Accumulative Index)")
-bottom_df = bottom_n_concern(filtered_df)
+bottom_df = bottom_n_concern(filtered_df, n=5)
 st.plotly_chart(
     horizontal_bar(
         bottom_df,
