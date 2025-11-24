@@ -1,5 +1,5 @@
 import streamlit as st
-from dataset_handler import load_and_preprocess
+from data_handler import load_and_preprocess
 from insights import top_n_by_cluster, bottom_n_concern, cluster_distribution
 from insights import horizontal_bar, pie_chart, pca_3d
 
