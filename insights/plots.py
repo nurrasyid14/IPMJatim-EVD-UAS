@@ -1,9 +1,30 @@
 import plotly.express as px
 
 # 1. Sideways Bar Plot
-def horizontal_bar(df, title, x_col, y_col):
-    fig = px.bar(df, x=x_col, y=y_col, orientation='h', color=x_col, text=x_col)
-    fig.update_layout(title_text=title, yaxis={'categoryorder':'total ascending'})
+import plotly.express as px
+
+def horizontal_bar(df, title, x_col, y_col, color_scale='Blues'):
+    """
+    df: DataFrame
+    title: chart title
+    x_col: column name for x-axis (values)
+    y_col: column name for y-axis (categories)
+    color_scale: color scale name for Plotly
+    """
+    fig = px.bar(
+        df,
+        x=x_col,
+        y=y_col,
+        orientation='h',
+        color=x_col,
+        color_continuous_scale=color_scale,
+        text=x_col
+    )
+    fig.update_layout(
+        title_text=title,
+        yaxis={'categoryorder': 'total ascending'},
+        coloraxis_colorbar=dict(title=x_col)
+    )
     return fig
 
 # 2. Pie chart of cluster distribution
