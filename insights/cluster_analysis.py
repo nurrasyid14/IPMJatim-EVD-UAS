@@ -1,4 +1,20 @@
-def top_n_by_cluster(df, n=3):
+import pandas as pd
+
+def top_n_by_cluster(df: pd.DataFrame, n: int = 3) -> dict:
+    """
+    Returns top n cities by each index metric for each cluster.
+    
+    Output format:
+    {
+        cluster_number: {
+            'Indeks Ekonomi': DataFrame,
+            'Indeks Pendidikan': DataFrame,
+            'Cluster': DataFrame,
+            'Indeks Accumulative': DataFrame
+        },
+        ...
+    }
+    """
     clusters = df['Cluster'].unique()
     result = {}
 
@@ -13,3 +29,17 @@ def top_n_by_cluster(df, n=3):
         }
 
     return result
+
+
+def bottom_n_concern(df: pd.DataFrame, n: int = 5) -> pd.DataFrame:
+    """
+    Returns bottom n cities with the lowest accumulative index.
+    """
+    return df.nsmallest(n, 'Indeks Accumulative')[['City', 'Indeks Accumulative']]
+
+
+def cluster_distribution(df: pd.DataFrame) -> pd.Series:
+    """
+    Returns the count of cities per cluster.
+    """
+    return df['Cluster'].value_counts().sort_index()
