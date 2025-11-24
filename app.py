@@ -34,44 +34,72 @@ cluster_filter = st.sidebar.multiselect(
 filtered_df = df[df['Cluster'].isin(cluster_filter)]
 
 # -----------------------
-# Top 10 Accumulative Index
+# Top Charts Layout (2x2)
 # -----------------------
 top_acc_df = top_n_accumulative(filtered_df, n=10)
-st.plotly_chart(
-    horizontal_bar(
-        top_acc_df,
-        title="Top 10 Kota dengan Indeks Terbaik",
-        x_col='Indeks Accumulative',
-        y_col='City',
-        top=True  # Blue gradient
-    ),
-    use_container_width=True
-)
+top_ekonomi_df = top_n_by_index(filtered_df, 'Indeks Ekonomi', n=5)
+top_pendidikan_df = top_n_by_index(filtered_df, 'Indeks Pendidikan', n=5)
+top_kesehatan_df = top_n_by_index(filtered_df, 'Indeks Kesehatan', n=5)
 
-# -----------------------
-# Top 5 by Individual Indexes
-# -----------------------
-for col in ['Indeks Ekonomi', 'Indeks Pendidikan', 'Indeks Kesehatan']:
-    top_index_df = top_n_by_index(filtered_df, col, n=5)
+# First row: Top Accumulative | Top Ekonomi
+col1, col2 = st.columns(2)
+with col1:
     st.plotly_chart(
         horizontal_bar(
-            top_index_df,
-            title=f"Top 5 {col}",
-            x_col=col,
+            top_acc_df,
+            title="Top 10 Kota dengan Indeks Terbaik",
+            x_col='Indeks Accumulative',
             y_col='City',
-            top=True  # Blue gradient
+            top=True
+        ),
+        use_container_width=True
+    )
+with col2:
+    st.plotly_chart(
+        horizontal_bar(
+            top_ekonomi_df,
+            title="Top 5 Kota - Indeks Ekonomi",
+            x_col='Indeks Ekonomi',
+            y_col='City',
+            top=True
+        ),
+        use_container_width=True
+    )
+
+# Second row: Top Pendidikan | Top Kesehatan
+col3, col4 = st.columns(2)
+with col3:
+    st.plotly_chart(
+        horizontal_bar(
+            top_pendidikan_df,
+            title="Top 5 Kota - Indeks Pendidikan",
+            x_col='Indeks Pendidikan',
+            y_col='City',
+            top=True
+        ),
+        use_container_width=True
+    )
+with col4:
+    st.plotly_chart(
+        horizontal_bar(
+            top_kesehatan_df,
+            title="Top 5 Kota - Indeks Kesehatan",
+            x_col='Indeks Kesehatan',
+            y_col='City',
+            top=True
         ),
         use_container_width=True
     )
 
 # -----------------------
-# Bottom 5 Concern
+# Bottom 5 Concern (Red Gradient)
 # -----------------------
 bottom_df = bottom_n_concern(filtered_df, n=5)
+st.header("5 Kab/Kota yang perlu dikembangkan")
 st.plotly_chart(
     horizontal_bar(
         bottom_df,
-        title="5 Kab/Kota yang perlu dikembangkan",
+        title="Bottom 5 Cities - Accumulative Index",
         x_col='Indeks Accumulative',
         y_col='City',
         top=False  # Red gradient
@@ -82,7 +110,7 @@ st.plotly_chart(
 # -----------------------
 # Cluster Distribution Pie Chart
 # -----------------------
-st.header("Cluster Members Distribution")
+st.header("Distribusi Anggota Cluster")
 distribution = cluster_distribution(filtered_df)
 st.plotly_chart(
     pie_chart(distribution, title="Anggota Cluster"),
