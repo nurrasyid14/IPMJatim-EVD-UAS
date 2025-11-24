@@ -13,7 +13,7 @@ from insights import (
 # -----------------------
 # Streamlit Settings
 # -----------------------
-st.set_page_config(page_title="City Index Dashboard", layout="wide")
+st.set_page_config(page_title="Dashboard IPM Jatim 2024", layout="wide")
 st.title("City Index Dashboard")
 
 # -----------------------
@@ -40,7 +40,7 @@ top_acc_df = top_n_accumulative(filtered_df, n=10)
 st.plotly_chart(
     horizontal_bar(
         top_acc_df,
-        title="Top 10 Accumulative Index",
+        title="Top 10 Kota dengan Indeks Terbaik",
         x_col='Indeks Accumulative',
         y_col='City',
         top=True  # Blue gradient
@@ -71,7 +71,7 @@ bottom_df = bottom_n_concern(filtered_df, n=5)
 st.plotly_chart(
     horizontal_bar(
         bottom_df,
-        title="Bottom 5 Cities",
+        title="5 Kab/Kota yang perlu dikembangkan",
         x_col='Indeks Accumulative',
         y_col='City',
         top=False  # Red gradient
@@ -85,14 +85,14 @@ st.plotly_chart(
 st.header("Cluster Members Distribution")
 distribution = cluster_distribution(filtered_df)
 st.plotly_chart(
-    pie_chart(distribution, title="Cluster Members"),
+    pie_chart(distribution, title="Anggota Cluster"),
     use_container_width=True
 )
 
 # -----------------------
 # 3D PCA Projection
 # -----------------------
-st.header("3D PCA Projection of Cities")
+st.header("Visualisasi Cluster Indeks Kab/Kota")
 st.plotly_chart(
     pca_3d(filtered_df),
     use_container_width=True
