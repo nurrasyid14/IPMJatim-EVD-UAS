@@ -12,7 +12,7 @@ st.title("City Index Dashboard")
 # -----------------------
 # Load Data
 # -----------------------
-df = load_and_preprocess("data/dataset.csv")
+df = load_and_preprocess("data_handler/IPM Jatim 2024.xlsx")
 
 # -----------------------
 # Sidebar Filters
