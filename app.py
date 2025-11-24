@@ -29,26 +29,33 @@ filtered_df = df[df['Cluster'].isin(cluster_filter)]
 # -----------------------
 # Top 3 by Cluster (Blue Gradient)
 # -----------------------
-st.header("Top 3 Indices by Cluster")
-top_data = top_n_by_cluster(filtered_df)
+st.header("Top 10 Cities by Accumulative Index")
+top_acc_df = top_n_accumulative(filtered_df)
+st.plotly_chart(
+    horizontal_bar(
+        top_acc_df,
+        title="Top 10 Accumulative Index",
+        x_col='Indeks Accumulative',
+        y_col='City',
+        color_scale='Blues'
+    ),
+    use_container_width=True
+)
 
-for cluster, metrics in sorted(top_data.items(), reverse=True):
-    st.subheader(f"Cluster {cluster}")
-    
-    # Side-by-side layout for all metrics
-    cols = st.columns(len(metrics))
-    for i, (metric_name, metric_df) in enumerate(metrics.items()):
-        with cols[i]:
-            st.plotly_chart(
-                horizontal_bar(
-                    metric_df,
-                    title=f"Top 3 {metric_name}",
-                    x_col=metric_name,
-                    y_col='City',
-                    color_scale='Blues'
-                ),
-                use_container_width=True
-            )
+# Top 5 by individual indexes
+for col in ['Indeks Ekonomi', 'Indeks Pendidikan', 'Indeks Kesehatan']:
+    st.header(f"Top 5 Cities by {col}")
+    top_index_df = top_n_by_index(filtered_df, col, n=5)
+    st.plotly_chart(
+        horizontal_bar(
+            top_index_df,
+            title=f"Top 5 {col}",
+            x_col=col,
+            y_col='City',
+            color_scale='Blues'
+        ),
+        use_container_width=True
+    )
 
 # -----------------------
 # Bottom 5 Concern (Red Gradient)

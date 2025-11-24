@@ -1,42 +1,22 @@
 import pandas as pd
 
-def top_n_by_cluster(df: pd.DataFrame, n: int = 5) -> dict:
+def top_n_accumulative(df: pd.DataFrame, n: int = 10) -> pd.DataFrame:
     """
-    Returns top n cities by each index metric for each cluster.
-    
-    Output format:
-    {
-        cluster_number: {
-            'Indeks Ekonomi': DataFrame,
-            'Indeks Pendidikan': DataFrame,
-            'Cluster': DataFrame,
-            'Indeks Accumulative': DataFrame
-        },
-        ...
-    }
+    Returns top n cities by Accumulative Index.
     """
-    clusters = df['Cluster'].unique()
-    result = {}
+    return df.nlargest(n, 'Indeks Accumulative')[['City', 'Indeks Accumulative']]
 
-    for cluster in sorted(clusters, reverse=True):
-        cluster_df = df[df['Cluster'] == cluster]
-
-        result[cluster] = {
-            'Indeks Ekonomi': cluster_df.nlargest(n, 'Indeks Ekonomi')[['City', 'Indeks Ekonomi']],
-            'Indeks Pendidikan': cluster_df.nlargest(n, 'Indeks Pendidikan')[['City', 'Indeks Pendidikan']],
-            'Cluster': cluster_df.nlargest(n, 'Cluster')[['City', 'Cluster']],
-            'Indeks Accumulative': cluster_df.nlargest(n, 'Indeks Accumulative')[['City', 'Indeks Accumulative']]
-        }
-
-    return result
-
+def top_n_by_index(df: pd.DataFrame, index_col: str, n: int = 5) -> pd.DataFrame:
+    """
+    Returns top n cities by a specific index (Indeks Ekonomi, Pendidikan, Kesehatan)
+    """
+    return df.nlargest(n, index_col)[['City', index_col]]
 
 def bottom_n_concern(df: pd.DataFrame, n: int = 5) -> pd.DataFrame:
     """
     Returns bottom n cities with the lowest accumulative index.
     """
     return df.nsmallest(n, 'Indeks Accumulative')[['City', 'Indeks Accumulative']]
-
 
 def cluster_distribution(df: pd.DataFrame) -> pd.Series:
     """
