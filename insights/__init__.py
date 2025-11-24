@@ -15,7 +15,4 @@ __all__ = [
     'top_n_by_index',
     'bottom_n_concern',
     'cluster_distribution',
-    'horizontal_bar',
-    'pie_chart',
-    'pca_3d'
 ]
