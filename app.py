@@ -14,7 +14,7 @@ from insights import (
 # Streamlit Settings
 # -----------------------
 st.set_page_config(page_title="Dashboard IPM Jatim 2024", layout="wide")
-st.title("City Index Dashboard")
+st.title("Dashboard IPM Jatim 2024")
 
 # -----------------------
 # Load Data
