@@ -1,5 +1,5 @@
 import streamlit as st
-from dataset_handler import load_and_preprocess
+from data_handler import load_and_preprocess
 from insights import (
     top_n_accumulative,
     top_n_by_index,
@@ -19,7 +19,7 @@ st.title("City Index Dashboard")
 # -----------------------
 # Load Data
 # -----------------------
-df = load_and_preprocess("data/dataset.csv")
+df = load_and_preprocess("data_handler/IPM Jatim 2024.xlsx")
 
 # -----------------------
 # Sidebar Filters
