@@ -34,9 +34,8 @@ cluster_filter = st.sidebar.multiselect(
 filtered_df = df[df['Cluster'].isin(cluster_filter)]
 
 # -----------------------
-# Top 10 by Accumulative Index (Blue Gradient)
+# Top 10 Accumulative Index
 # -----------------------
-st.header("Top 10 Cities by Accumulative Index")
 top_acc_df = top_n_accumulative(filtered_df, n=10)
 st.plotly_chart(
     horizontal_bar(
@@ -44,16 +43,15 @@ st.plotly_chart(
         title="Top 10 Accumulative Index",
         x_col='Indeks Accumulative',
         y_col='City',
-        color_scale='Blues'
+        top=True  # Blue gradient
     ),
     use_container_width=True
 )
 
 # -----------------------
-# Top 5 by Individual Indexes (Blue Gradient)
+# Top 5 by Individual Indexes
 # -----------------------
 for col in ['Indeks Ekonomi', 'Indeks Pendidikan', 'Indeks Kesehatan']:
-    st.header(f"Top 5 Cities by {col}")
     top_index_df = top_n_by_index(filtered_df, col, n=5)
     st.plotly_chart(
         horizontal_bar(
@@ -61,15 +59,14 @@ for col in ['Indeks Ekonomi', 'Indeks Pendidikan', 'Indeks Kesehatan']:
             title=f"Top 5 {col}",
             x_col=col,
             y_col='City',
-            color_scale='Blues'
+            top=True  # Blue gradient
         ),
         use_container_width=True
     )
 
 # -----------------------
-# Bottom 5 Concern (Red Gradient)
+# Bottom 5 Concern
 # -----------------------
-st.header("Bottom 5 Concern (Lowest Accumulative Index)")
 bottom_df = bottom_n_concern(filtered_df, n=5)
 st.plotly_chart(
     horizontal_bar(
@@ -77,7 +74,7 @@ st.plotly_chart(
         title="Bottom 5 Cities",
         x_col='Indeks Accumulative',
         y_col='City',
-        color_scale='Reds_r'  # reversed red so lowest values are darkest
+        top=False  # Red gradient
     ),
     use_container_width=True
 )
