@@ -1,6 +1,6 @@
 import pandas as pd
 
-def top_n_by_cluster(df: pd.DataFrame, n: int = 3) -> dict:
+def top_n_by_cluster(df: pd.DataFrame, n: int = 5) -> dict:
     """
     Returns top n cities by each index metric for each cluster.
     
